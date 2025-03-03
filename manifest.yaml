@@ -1,0 +1,33 @@
+variables:
+  stream: devel
+  prod: true
+
+releasever: 41
+
+packages:
+  # We removed file-transfer.yaml, but curl is required for coreos-livepxe-rootfs.sh
+  - curl
+  # We removed user-experience.yaml, but bsdtar is required for 35coreos-live dracut module
+  - bsdtar
+  # We removed user-experience.yaml, but the improved MOTD experience might be useful
+  - console-login-helper-messages-issuegen
+  - console-login-helper-messages-profile
+  # We removed shared-el9.yaml, but network teaming might be useful
+  - NetworkManager-team teamd
+
+#exclude-packages:
+#  # Ensure containerd is removed
+#  - containerd
+
+# fedora-coreos-config/manifests/fedora-coreos.yaml
+ref: fedora/${basearch}/coreos/${stream}
+metadata:
+  license: MIT
+  name: k3s-coreos
+  summary: K3s CoreOS ${stream}
+
+# fedora-coreos-config/manifests/fedora-coreos.yaml
+include:
+  - fedora-coreos-minimal.yaml
+
+# vim: set et ts=2 sw=2:
