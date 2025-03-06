@@ -31,6 +31,7 @@ setup:
 	COPY . /src
 	RUN cosa init --transient /src
 	#ARG COSA_NO_KVM=1
+	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged cosa fetch
 
 	SAVE IMAGE --push $image_namespace/cache/setup:$image_tag
@@ -40,6 +41,7 @@ build:
 	FROM +setup
 
 	#ARG COSA_NO_KVM=1
+	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged cosa fetch
 	RUN --privileged cosa build container
 	RUN --privileged cosa osbuild qemu metal metal4k
