@@ -41,13 +41,14 @@ build:
 
 	ARG COSA_NO_KVM=1
 	RUN cosa fetch
-	RUN cosa build qemu metal metal4k
+	RUN cosa build container
+	RUN cosa osbuild qemu metal metal4k
 	RUN cosa buildextend-live
 	RUN rm \
 		builds/builds.json \
 		builds/latest
 
-	SAVE ARTIFACT --symlink-no-follow builds/* /
+	SAVE ARTIFACT --symlink-no-follow builds/*
 
 
 shell:
