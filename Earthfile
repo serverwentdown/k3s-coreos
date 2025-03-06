@@ -26,6 +26,8 @@ coreos-assembler-pull:
 
 
 setup:
+	BUILD +coreos-assembler-pull
+
 	FROM +coreos-assembler-pull
 
 	COPY . /src
@@ -38,6 +40,8 @@ setup:
 
 
 build:
+	BUILD +setup
+
 	FROM +setup
 
 	#ARG COSA_NO_KVM=1
