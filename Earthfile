@@ -31,10 +31,12 @@ setup:
 	FROM +coreos-assembler-pull
 
 	COPY . /src
-	RUN cosa init --transient /src
+
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
-	RUN --privileged cosa fetch
+	RUN --privileged \
+		cosa init --transient /src \
+		&& cosa fetch
 
 	SAVE IMAGE --push $image_namespace/cache/setup:$image_tag
 
@@ -46,12 +48,15 @@ build:
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
-	RUN --privileged cosa fetch
-	RUN --privileged cosa build container
-	RUN --privileged cosa osbuild qemu metal metal4k
-	RUN --privileged cosa buildextend-live
-	RUN rm \
-		builds/builds.json \
-		builds/latest
+	RUN --privileged \
+		cosa fetch \
+		&& cosa build container \
+		&& cosa osbuild qemu metal metal4k \
+		&& cosa buildextend-live \
+		&& rm -rf \
+			cache \
+			tmp \
+			builds/builds.json \
+			builds/latest
 
 	SAVE ARTIFACT --symlink-no-follow builds/*
