@@ -30,8 +30,8 @@ setup:
 
 	COPY . /src
 	RUN cosa init --transient /src
-	ARG COSA_NO_KVM=1
-	RUN cosa fetch
+	#ARG COSA_NO_KVM=1
+	RUN --privileged cosa fetch
 
 	SAVE IMAGE --push $image_namespace/cache/setup:$image_tag
 
@@ -39,18 +39,13 @@ setup:
 build:
 	FROM +setup
 
-	ARG COSA_NO_KVM=1
-	RUN cosa fetch
-	RUN cosa build container
-	RUN cosa osbuild qemu metal metal4k
-	RUN cosa buildextend-live
+	#ARG COSA_NO_KVM=1
+	RUN --privileged cosa fetch
+	RUN --privileged cosa build container
+	RUN --privileged cosa osbuild qemu metal metal4k
+	RUN --privileged cosa buildextend-live
 	RUN rm \
 		builds/builds.json \
 		builds/latest
 
 	SAVE ARTIFACT --symlink-no-follow builds/*
-
-
-shell:
-	FROM +build
-	RUN false
