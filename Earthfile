@@ -41,7 +41,8 @@ build:
 
 	ARG COSA_NO_KVM=1
 	RUN cosa fetch
-	RUN cosa build qemu metal metal4k live
+	RUN cosa build qemu metal metal4k
+	RUN cosa buildextend-live
 	RUN rm \
 		builds/builds.json \
 		builds/latest
