@@ -6,7 +6,7 @@ ARG --global base_image=docker.io/library/alpine:3.21.3
 
 
 coreos-assembler-pull:
-	FROM quay.io/coreos-assembler/coreos-assembler@sha256:6614c5d038531b1eaee3628d695681ae41045dcd76cf2ca1d8f4d8a559b9e63c
+	FROM quay.io/coreos-assembler/coreos-assembler:latest
 	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
 
 #coreos-assembler-source:
@@ -30,6 +30,8 @@ setup:
 
 	COPY . /src
 	RUN cosa init --transient /src
+	ARG COSA_NO_KVM=1
+	RUN cosa fetch
 
 	SAVE IMAGE --push $image_namespace/cache/setup:$image_tag
 
