@@ -51,12 +51,13 @@ build:
 	RUN --privileged \
 		cosa fetch \
 		&& cosa build container \
-		&& cosa osbuild qemu metal metal4k \
+		&& cosa osbuild qemu \
 		&& cosa buildextend-live \
 		&& rm -rf \
 			cache \
 			tmp \
 			builds/builds.json \
 			builds/latest
+	# Other osbuild targets: metal metal4k
 
 	SAVE ARTIFACT --symlink-no-follow builds/*
