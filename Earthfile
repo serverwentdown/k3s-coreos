@@ -5,30 +5,31 @@ ARG --global image_tag=latest
 ARG --global base_image=docker.io/library/alpine:3.21.3
 
 
-coreos-assembler-pull:
-	FROM quay.io/coreos-assembler/coreos-assembler:latest
-	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
+#coreos-assembler-pull:
+#	FROM quay.io/coreos-assembler/coreos-assembler:latest
+#	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
 
-#coreos-assembler-source:
-#	FROM $base_image
-#
-#	RUN apk add --no-cache git
-#
-#	GIT CLONE \
-#		--branch b31a7d3e558058f79232005c75fbc9f4511cf342 \
-#		https://github.com/coreos/coreos-assembler.git \
-#		src
-#	SAVE ARTIFACT src/* /
-#
-#coreos-assembler:
-#	FROM DOCKERFILE +coreos-assembler-source/
-#	SAVE IMAGE --push $image_namespace/coreos-assembler:$image_tag
+coreos-assembler-source:
+	FROM $base_image
+
+	RUN apk add --no-cache git
+
+	GIT CLONE \
+		--branch b31a7d3e558058f79232005c75fbc9f4511cf342 \
+		https://github.com/coreos/coreos-assembler.git \
+		src
+	SAVE ARTIFACT src/* /
+
+coreos-assembler:
+	FROM DOCKERFILE +coreos-assembler-source/
+
+	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
 
 
 setup:
-	BUILD +coreos-assembler-pull
+	BUILD +coreos-assembler
 
-	FROM +coreos-assembler-pull
+	FROM $image_namespace/coreos-assembler:$image_tag
 
 	COPY . /src
 
