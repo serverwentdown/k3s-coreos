@@ -61,4 +61,4 @@ build:
 			builds/latest
 	# Other osbuild targets: metal metal4k
 
-	SAVE ARTIFACT --symlink-no-follow builds/*
+	SAVE ARTIFACT builds/*
