@@ -11,7 +11,8 @@ packages:
   # Management
   - htop
   # SELinux policy module for k3s
-  - container-selinux k3s-selinux
+  - container-selinux
+  - https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.stable.1/k3s-selinux-1.6-1.coreos.noarch.rpm
   #
   # Restore packages
   #
