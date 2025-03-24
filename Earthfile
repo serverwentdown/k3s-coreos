@@ -15,7 +15,7 @@ coreos-assembler-source:
 	RUN apk add --no-cache git
 
 	GIT CLONE \
-		--branch b31a7d3e558058f79232005c75fbc9f4511cf342 \
+		--branch 846c0b0ad562eccd66ce6fe239e28234ee7e3264 \
 		https://github.com/coreos/coreos-assembler.git \
 		src
 
