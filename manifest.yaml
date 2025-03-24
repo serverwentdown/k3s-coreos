@@ -5,6 +5,13 @@ variables:
 releasever: 41
 
 packages:
+  #
+  # Add packages
+  #
+  - htop
+  #
+  # Restore packages
+  #
   # We removed file-transfer.yaml, but curl is required for coreos-livepxe-rootfs.sh
   - curl
   # We removed user-experience.yaml, but bsdtar is required for 35coreos-live dracut module

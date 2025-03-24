@@ -29,7 +29,7 @@ coreos-assembler:
 setup:
 	BUILD +coreos-assembler
 
-	FROM $image_namespace/coreos-assembler:$image_tag
+	FROM +coreos-assembler
 
 	COPY . /src
 
@@ -50,15 +50,18 @@ build:
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged \
-		cosa fetch \
-		&& cosa build container \
-		&& cosa osbuild qemu \
-		&& cosa buildextend-live \
-		&& rm -rf \
-			cache \
-			tmp \
-			builds/builds.json \
-			builds/latest
+		cosa fetch
+	RUN --privileged \
+		cosa build container
+	RUN --privileged \
+		cosa osbuild qemu
+	RUN --privileged \
+		cosa buildextend-live
+	#	&& rm -rf \
+	#		cache \
+	#		tmp \
+	#		builds/builds.json \
+	#		builds/latest
 	# Other osbuild targets: metal metal4k
 
 	SAVE ARTIFACT builds/*
