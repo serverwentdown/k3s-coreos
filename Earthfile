@@ -18,7 +18,9 @@ coreos-assembler-source:
 		--branch b31a7d3e558058f79232005c75fbc9f4511cf342 \
 		https://github.com/coreos/coreos-assembler.git \
 		src
+
 	SAVE ARTIFACT src/* /
+	SAVE IMAGE --push $image_namespace/cache/coreos-assembler-source:$image_tag
 
 coreos-assembler:
 	FROM DOCKERFILE +coreos-assembler-source/
