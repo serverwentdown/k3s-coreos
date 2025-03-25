@@ -33,8 +33,7 @@ setup:
 
 	FROM +coreos-assembler
 
-	COPY fedora-coreos-config /src/fedora-coreos-config
-	COPY *.yaml *.repo /src
+	COPY --dir fedora-coreos-config *.yaml *.repo /src
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
