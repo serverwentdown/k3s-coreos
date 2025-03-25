@@ -2,4 +2,4 @@
 	path = fedora-coreos-config
 	url = https://github.com/coreos/fedora-coreos-config.git
 	fetchRecurseSubmodules = true
-	shallow = true
+	branch = stable
