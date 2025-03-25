@@ -33,7 +33,7 @@ setup:
 
 	FROM +coreos-assembler
 
-	COPY . /src
+	COPY *.yaml *.repo /src
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
@@ -48,6 +48,14 @@ build:
 	BUILD +setup
 
 	FROM +setup
+
+	COPY . /src
+
+	# Download and install k3s
+	RUN cd /src/overlay.d/99custom \
+		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
+		&& chmod 755 usr/bin/k3s \
+		&& chown root:root usr/bin/k3s
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
