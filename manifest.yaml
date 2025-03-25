@@ -11,7 +11,7 @@ packages:
   # Management
   - htop
   # SELinux policy module for k3s
-  - container-selinux
+  - container-selinux k3s-selinux
   #
   # Restore packages
   #
@@ -24,15 +24,6 @@ packages:
   - console-login-helper-messages-profile
   # We removed shared-el9.yaml, but network teaming might be useful
   - NetworkManager-team teamd
-
-repo-packages:
-  #
-  # Add packages
-  #
-  - repo: https://rpm.rancher.io/k3s/stable/common/coreos/noarch
-    packages:
-      # SELinux policy module for k3s
-      - k3s-selinux
 
 #exclude-packages:
 #  # Ensure containerd is removed

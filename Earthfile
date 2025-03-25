@@ -23,6 +23,8 @@ coreos-assembler-source:
 	SAVE IMAGE --push $image_namespace/cache/coreos-assembler-source:$image_tag
 
 coreos-assembler:
+	BUILD +coreos-assembler-source
+
 	FROM DOCKERFILE +coreos-assembler-source/
 
 	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
@@ -55,8 +57,7 @@ build:
 	# Download and install k3s
 	RUN cd /src/overlay.d/99custom \
 		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
-		&& chmod 755 usr/bin/k3s \
-		&& chown root:root usr/bin/k3s
+		&& chmod 755 usr/bin/k3s
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
@@ -67,12 +68,8 @@ build:
 	RUN --privileged \
 		cosa osbuild qemu
 	RUN --privileged \
+		cosa osbuild metal metal4k
+	RUN --privileged \
 		cosa buildextend-live
-	#	&& rm -rf \
-	#		cache \
-	#		tmp \
-	#		builds/builds.json \
-	#		builds/latest
-	# Other osbuild targets: metal metal4k
 
 	SAVE ARTIFACT builds/*
