@@ -33,7 +33,8 @@ setup:
 
 	FROM +coreos-assembler
 
-	COPY --dir fedora-coreos-config live *.yaml *.repo /src
+	#COPY --dir fedora-coreos-config live *.yaml *.repo /src
+	COPY . /src
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
@@ -49,7 +50,7 @@ build:
 
 	FROM +setup
 
-	COPY . /src
+	#COPY . /src
 
 	# Download and install k3s
 	RUN cd /src/overlay.d/99custom \
