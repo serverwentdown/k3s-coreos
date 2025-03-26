@@ -68,4 +68,11 @@ build:
 		&& cosa osbuild qemu metal metal4k \
 		&& cosa buildextend-live
 
-	SAVE ARTIFACT builds/*
+	SAVE ARTIFACT builds/* AS LOCAL artifacts
+
+test:
+	FROM docker.io/library/alpine:3.21.3
+
+	RUN mkdir builds \
+		&& touch builds/test
+	SAVE ARTIFACT builds/* AS LOCAL artifacts/
