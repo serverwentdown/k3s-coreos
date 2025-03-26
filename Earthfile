@@ -35,13 +35,21 @@ setup:
 
 	FROM +coreos-assembler
 
-	#COPY --dir fedora-coreos-config live *.yaml *.repo /src
-	COPY . /src
+	ARG source=/src
+	ARG custom_overlay=overlay.d/99custom
+
+	# Download and install k3s
+	RUN mkdir -p $source/custom_overlay/usr/bin \
+		&& cd /src/overlay.d/99custom \
+		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
+		&& chmod 755 usr/bin/k3s
+
+	COPY . $source
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged \
-		cosa init --transient /src \
+		cosa init --transient $source \
 		&& cosa fetch
 
 	SAVE IMAGE --push $image_namespace/cache/setup:$image_tag
@@ -52,24 +60,12 @@ build:
 
 	FROM +setup
 
-	#COPY . /src
-
-	# Download and install k3s
-	RUN cd /src/overlay.d/99custom \
-		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
-		&& chmod 755 usr/bin/k3s
-
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged \
-		cosa fetch
-	RUN --privileged \
-		cosa build container
-	RUN --privileged \
-		cosa osbuild qemu
-	RUN --privileged \
-		cosa osbuild metal metal4k
-	RUN --privileged \
-		cosa buildextend-live
+		cosa fetch \
+		&& cosa build container \
+		&& cosa osbuild qemu metal metal4k \
+		&& cosa buildextend-live
 
 	SAVE ARTIFACT builds/*
