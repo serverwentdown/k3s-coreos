@@ -38,13 +38,13 @@ setup:
 	ARG source=/src
 	ARG custom_overlay=overlay.d/99custom
 
+	COPY . $source
+
 	# Download and install k3s
-	RUN mkdir -p $source/custom_overlay/usr/bin \
-		&& cd /src/overlay.d/99custom \
+	RUN mkdir -p $source/$custom_overlay/usr/bin \
+		&& cd $source/$custom_overlay \
 		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
 		&& chmod 755 usr/bin/k3s
-
-	COPY . $source
 
 	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
