@@ -2,7 +2,7 @@ VERSION 0.8
 
 ARG --global image_namespace=registry.makerforce.io/k3s-coreos
 ARG --global image_tag=latest
-ARG --global base_image=docker.io/library/alpine:3.21
+ARG --global base_image=docker.io/library/alpine:3.21.3
 
 
 #coreos-assembler-pull:
