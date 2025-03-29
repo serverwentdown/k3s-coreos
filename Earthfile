@@ -66,4 +66,4 @@ build:
 		&& cosa osbuild qemu metal metal4k \
 		&& cosa buildextend-live
 
-	SAVE ARTIFACT builds/* AS LOCAL artifacts
+	SAVE ARTIFACT builds/* AS LOCAL artifacts/
