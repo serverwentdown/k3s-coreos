@@ -4,6 +4,9 @@ variables:
 
 releasever: 41
 
+ostree-layers:
+  - overlay/99custom
+
 packages:
   #
   # Add packages

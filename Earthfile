@@ -54,8 +54,6 @@ setup:
 
 
 build:
-	BUILD +setup
-
 	FROM +setup
 
 	#ARG COSA_NO_KVM=1
