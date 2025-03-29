@@ -2,7 +2,7 @@ VERSION 0.8
 
 ARG --global image_namespace=registry.makerforce.io/k3s-coreos
 ARG --global image_tag=latest
-ARG --global base_image=docker.io/library/alpine:3.21.3
+ARG --global base_image=docker.io/library/alpine:3.21
 
 
 #coreos-assembler-pull:
@@ -15,7 +15,7 @@ coreos-assembler-source:
 	RUN apk add --no-cache git
 
 	GIT CLONE \
-		--branch 846c0b0ad562eccd66ce6fe239e28234ee7e3264 \
+		--branch 4c2afc4b72954427a3d2f71fc73c1ea762ec19c1 \
 		https://github.com/coreos/coreos-assembler.git \
 		src
 
@@ -31,9 +31,7 @@ coreos-assembler:
 
 
 setup:
-	BUILD +coreos-assembler
-
-	FROM +coreos-assembler
+	FROM $image_namespace/cache/coreos-assembler:$image_tag
 
 	ARG source=/src
 	ARG custom_overlay=overlay.d/99custom
@@ -69,10 +67,3 @@ build:
 		&& cosa buildextend-live
 
 	SAVE ARTIFACT builds/* AS LOCAL artifacts
-
-test:
-	FROM docker.io/library/alpine:3.21.3
-
-	RUN mkdir builds \
-		&& touch builds/test
-	SAVE ARTIFACT builds/* AS LOCAL artifacts/

@@ -1,5 +1,5 @@
 variables:
-  stream: devel
+  stream: stable
   prod: true
 
 releasever: 41
@@ -10,6 +10,8 @@ packages:
   #
   # Management
   - htop
+  # Networking
+  - tailscale
   # SELinux policy module for k3s
   - container-selinux k3s-selinux
   #
@@ -35,6 +37,9 @@ metadata:
   license: MIT
   name: k3s-coreos
   summary: K3s CoreOS ${stream}
+
+# fedora-coreos-config/manifests/fedora-coreos.yaml
+automatic-version-prefix: "${releasever}.<date:%Y%m%d>"
 
 # fedora-coreos-config/manifests/fedora-coreos.yaml
 include:
