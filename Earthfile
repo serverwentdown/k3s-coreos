@@ -5,10 +5,6 @@ ARG --global image_tag=latest
 ARG --global base_image=docker.io/library/alpine:3.21.3
 
 
-#coreos-assembler-pull:
-#	FROM quay.io/coreos-assembler/coreos-assembler:latest
-#	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
-
 coreos-assembler-source:
 	FROM $base_image
 
@@ -24,7 +20,6 @@ coreos-assembler-source:
 
 coreos-assembler:
 	BUILD +coreos-assembler-source
-
 	FROM DOCKERFILE +coreos-assembler-source/
 
 	SAVE IMAGE --push $image_namespace/cache/coreos-assembler:$image_tag
@@ -38,13 +33,20 @@ setup:
 
 	COPY . $source
 
+	# Create overlay binaries directory
+	RUN mkdir -p $source/$custom_overlay/usr/bin
+
 	# Download and install k3s
-	RUN mkdir -p $source/$custom_overlay/usr/bin \
-		&& cd $source/$custom_overlay \
+	RUN cd $source/$custom_overlay \
 		&& curl -Lo usr/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.32.2%2Bk3s1/k3s \
 		&& chmod 755 usr/bin/k3s
 
-	#ARG COSA_NO_KVM=1
+	# Download and install dust
+	RUN cd $source/$custom_overlay \
+		&& curl -Lo dust.tar.gz https://github.com/bootandy/dust/releases/download/v1.1.2/dust-v1.1.2-x86_64-unknown-linux-gnu.tar.gz \
+		&& tar -xz --strip-components 1 '*dust' --directory usr/bin \
+		&& rm dust.tar.gz
+
 	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged \
 		cosa init --transient $source \
@@ -56,12 +58,14 @@ setup:
 build:
 	FROM +setup
 
-	#ARG COSA_NO_KVM=1
 	ARG COSA_SKIP_OVERLAY=1
 	RUN --privileged \
 		cosa fetch \
 		&& cosa build container \
 		&& cosa osbuild qemu metal metal4k \
 		&& cosa buildextend-live
+	RUN rm \
+		builds/latest \
+		builds/builds.json
 
 	SAVE ARTIFACT builds/* AS LOCAL artifacts/
