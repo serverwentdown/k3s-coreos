@@ -44,7 +44,7 @@ setup:
 	# Download and install dust
 	RUN cd $source/$custom_overlay \
 		&& curl -Lo dust.tar.gz https://github.com/bootandy/dust/releases/download/v1.1.2/dust-v1.1.2-x86_64-unknown-linux-gnu.tar.gz \
-		&& tar -xz --strip-components 1 '*dust' --directory usr/bin \
+		&& tar -xzf dust.tar.gz --strip-components 1 '*dust' --directory usr/bin \
 		&& rm dust.tar.gz
 
 	ARG COSA_SKIP_OVERLAY=1
