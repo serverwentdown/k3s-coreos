@@ -35,7 +35,7 @@ packages:
 #  - containerd
 
 # fedora-coreos-config/manifests/fedora-coreos.yaml
-ref: fedora/${basearch}/coreos/${stream}
+ref: k3s-coreos/${basearch}/${stream}
 metadata:
   license: MIT
   name: k3s-coreos

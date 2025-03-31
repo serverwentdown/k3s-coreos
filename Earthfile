@@ -69,3 +69,9 @@ build:
 		builds/builds.json
 
 	SAVE ARTIFACT builds/* AS LOCAL artifacts/
+
+
+shell:
+	FROM +build
+
+	RUN --interactive bash
