@@ -59,14 +59,15 @@ build:
 	FROM +setup
 
 	ARG COSA_SKIP_OVERLAY=1
+	ARG XZ_DEFAULTS=--memlimit=4G
 	RUN --privileged \
 		cosa fetch \
 		&& cosa build container \
 		&& cosa osbuild qemu metal metal4k \
-		&& cosa buildextend-live
+		&& cosa buildextend-live \
+		&& cosa compress
 	RUN rm \
-		builds/latest \
-		builds/builds.json
+		builds/latest
 
 	SAVE ARTIFACT builds/* AS LOCAL artifacts/
 
