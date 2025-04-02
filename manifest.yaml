@@ -15,6 +15,7 @@ packages:
   - htop
   # Networking
   - tailscale
+  - ethtool
   # SELinux policy module for k3s
   - container-selinux k3s-selinux
   #
